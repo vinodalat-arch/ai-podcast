@@ -15,27 +15,12 @@ summary: "Your team is debating which AI model to use. They're asking the wrong 
 
 ### Builds on: Episode 2 — Why Frameworks Are Dying
 
-### Key Takeaways
-
-- Model = intelligence. Agent = execution. System = trust. Most failures come from collapsing all three into one
-- A model produces answers — it does not produce outcomes
-- An agent produces motion — it does not guarantee correctness
-- The system layer is where AI becomes engineering — and it's the most underinvested layer today
-
-### The Core Argument
-
 > "The industry is currently over-focused on models. The real shift is architectural. The future of engineering will not be model-driven. It will be system-driven."
 
-### Why This Matters
+Model = intelligence. Agent = execution. System = trust. Most failures in AI adoption come from collapsing all three into one.
 
-Every AI conversation starts with "which model should we use?" That's like asking which engine to put in a car before you've designed the chassis, brakes, or steering. This episode separates the three layers that matter — intelligence, execution, and trust — and explains why optimizing one while ignoring the others guarantees failure.
+A model produces answers — not outcomes. An agent produces motion — not correctness. The system layer is where AI becomes engineering. It's also the most underinvested layer in most organizations today.
 
-### Who Should Watch This
+Every AI conversation starts with "which model should we use?" That's like asking which engine to put in a car before designing the chassis, brakes, or steering. This episode separates the three layers that matter and explains why optimizing one while ignoring the others guarantees failure.
 
-- Teams evaluating AI platforms (Bedrock, Vertex, Azure)
-- Engineers confused about the difference between using a model and building a system
-- Decision-makers comparing AI vendors on the wrong criteria
-
-### What You'll Learn
-
-The execution stack of modern AI systems: Context → Model → Agent Loop → Tools → Validation → Governance → Outcome. How different players dominate different layers. Why context strategy is the hidden lever most organizations ignore. And why the teams that understand the model/agent/system distinction will build reliable systems while everyone else stays stuck in demos.
+The execution stack of modern AI: Context → Model → Agent Loop → Tools → Validation → Governance → Outcome. Context strategy is the hidden lever. Decentralized context with centralized structure wins. And the teams that understand this distinction build reliable systems while everyone else stays stuck in demos.
