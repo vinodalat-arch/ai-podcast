@@ -543,9 +543,16 @@ def render_homepage():
 
 # --- Main Router ---
 def main():
+    # Check URL query params for direct episode links
+    params = st.query_params
+    if "episode" in params and not st.session_state.get("selected_episode"):
+        st.session_state["selected_episode"] = params["episode"]
+
     selected_slug = st.session_state.get("selected_episode")
 
     if selected_slug:
+        # Sync URL with selected episode
+        st.query_params["episode"] = selected_slug
         # Track last watched
         st.session_state["last_watched"] = selected_slug
         episode = get_episode_by_slug(selected_slug)
@@ -555,8 +562,10 @@ def main():
             st.error("Episode not found.")
             if st.button("Back to Home"):
                 st.session_state["selected_episode"] = None
+                st.query_params.clear()
                 st.rerun()
     else:
+        st.query_params.clear()
         render_homepage()
 
 

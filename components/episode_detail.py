@@ -78,6 +78,7 @@ def render_episode_detail(episode):
     # Back button
     if st.button("← Back to Episodes"):
         st.session_state["selected_episode"] = None
+        st.query_params.clear()
         st.rerun()
 
     st.markdown("")
