@@ -1,6 +1,7 @@
 import os
 import yaml
 import glob
+import streamlit as st
 
 
 CONTENT_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "content", "episodes")
@@ -51,6 +52,7 @@ def parse_episode(filepath):
     return metadata
 
 
+@st.cache_data(ttl=60)
 def load_all_episodes(include_drafts=False):
     """Load all episode files, sorted by episode number."""
     episodes = []

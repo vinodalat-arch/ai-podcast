@@ -1,5 +1,11 @@
 import streamlit as st
-from utils.content_loader import ARCS, get_related_episodes, get_adjacent_episodes, get_episodes_by_arc
+from utils.content_loader import (
+    ARCS,
+    get_related_episodes,
+    get_adjacent_episodes,
+    get_episode_by_slug,
+    load_all_episodes,
+)
 
 
 def render_video(video_url):
@@ -57,6 +63,9 @@ def render_episode_detail(episode):
     tags = episode.get("tags", [])
     body = episode.get("body", "")
     video_url = episode.get("video_url", "")
+    builds_on = episode.get("builds_on", "")
+
+    total_episodes = len(load_all_episodes(include_drafts=True))
 
     # Back button
     if st.button("← Back to Episodes"):
@@ -67,12 +76,13 @@ def render_episode_detail(episode):
     st.markdown("---")
     st.markdown("")
 
-    # Header
+    # Progress + Arc badge
     st.markdown(
         f'<div style="margin-bottom:8px;">'
         f'<span style="background:{arc_color};color:white;padding:4px 12px;'
         f'border-radius:20px;font-size:12px;font-weight:600;">{arc}</span>'
-        f'<span style="color:#888;font-size:14px;margin-left:12px;">Episode {ep_num}</span>'
+        f'<span style="color:#888;font-size:13px;margin-left:12px;">'
+        f'Episode {ep_num} of {total_episodes}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -86,6 +96,20 @@ def render_episode_detail(episode):
         for tag in tags
     )
     st.markdown(tag_html, unsafe_allow_html=True)
+
+    # Builds on
+    if builds_on:
+        prev_episode = get_episode_by_slug(builds_on)
+        if prev_episode:
+            st.markdown("")
+            st.markdown(
+                f'<div style="font-size:13px;color:#999;padding:8px 12px;'
+                f'background:#f8f8f8;border-radius:6px;border-left:3px solid {arc_color};">'
+                f'This builds on: '
+                f'<strong style="color:#555;">E{prev_episode["episode_number"]:02d} — '
+                f'{prev_episode["title"]}</strong></div>',
+                unsafe_allow_html=True,
+            )
 
     st.markdown("")
     st.markdown("")
@@ -122,7 +146,7 @@ def render_episode_detail(episode):
     with col1:
         if prev_ep:
             if st.button(
-                f"← Previous: Ep {prev_ep['episode_number']}",
+                f"← Previous: E{prev_ep['episode_number']:02d}",
                 key="prev_ep",
                 use_container_width=True,
             ):
@@ -132,7 +156,7 @@ def render_episode_detail(episode):
     with col2:
         if next_ep:
             if st.button(
-                f"Next: Ep {next_ep['episode_number']} →",
+                f"Next: E{next_ep['episode_number']:02d} →",
                 key="next_ep",
                 use_container_width=True,
             ):
@@ -151,7 +175,7 @@ def render_episode_detail(episode):
 
     if next_in_arc:
         if st.button(
-            f"▶ Next in {arc}: Ep {next_in_arc['episode_number']} — {next_in_arc['title']}",
+            f"▶ Next in {arc}: E{next_in_arc['episode_number']:02d} — {next_in_arc['title']}",
             key="next_in_arc",
             use_container_width=True,
         ):
@@ -178,7 +202,7 @@ def render_episode_detail(episode):
             rel_title = rel.get("title", "")
             rel_slug = rel.get("slug", "")
             if st.button(
-                f"Ep {rel_num}: {rel_title}",
+                f"E{rel_num:02d}: {rel_title}",
                 key=f"related_{rel_slug}",
                 use_container_width=True,
             ):

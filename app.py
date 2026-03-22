@@ -3,11 +3,10 @@ from utils.content_loader import (
     load_all_episodes,
     get_episode_by_slug,
     get_episodes_by_arc,
-    get_featured_episodes,
     get_all_tags,
     ARCS,
 )
-from components.episode_card import render_episode_card, render_featured_card
+from components.episode_card import render_episode_card
 from components.episode_detail import render_episode_detail
 
 # --- Page Config ---
@@ -134,6 +133,8 @@ if "selected_episode" not in st.session_state:
     st.session_state["selected_episode"] = None
 if "filter_arc" not in st.session_state:
     st.session_state["filter_arc"] = "All"
+if "show_arc_grid" not in st.session_state:
+    st.session_state["show_arc_grid"] = False
 
 
 def render_arc_quadrant(arc_name, arc_info, all_episodes):
@@ -149,13 +150,18 @@ def render_arc_quadrant(arc_name, arc_info, all_episodes):
     arc_eps = [e for e in all_episodes if e.get("arc") == arc_name]
     arc_eps.sort(key=lambda e: e.get("episode_number", 999))
 
+    pub_count = len([e for e in arc_eps if e.get("status") == "published"])
+    total_count = len(arc_eps)
+
     # Arc header
     st.markdown(
         f'<div style="background:{bg};border:2px solid {color}22;border-top:4px solid {color};'
         f'border-radius:12px;padding:20px 20px 8px 20px;">'
         f'<div style="font-size:11px;color:{color};font-weight:700;text-transform:uppercase;'
         f'letter-spacing:1px;margin-bottom:4px;">Arc {arc_info["order"]}</div>'
-        f'<div style="font-size:18px;font-weight:800;color:#1a1a1a;margin-bottom:6px;">{arc_name}</div>'
+        f'<div style="font-size:18px;font-weight:800;color:#1a1a1a;margin-bottom:4px;">{arc_name}</div>'
+        f'<div style="font-size:11px;color:#aaa;margin-bottom:8px;">'
+        f'{pub_count} of {total_count} episodes available</div>'
         f'<div style="font-size:13px;color:#777;margin-bottom:8px;line-height:1.4;">'
         f'{arc_info["description"]}</div></div>',
         unsafe_allow_html=True,
@@ -170,20 +176,20 @@ def render_arc_quadrant(arc_name, arc_info, all_episodes):
         if is_draft:
             st.markdown(
                 f'<div style="opacity:0.4;padding:4px 8px;font-size:13px;">'
-                f'<span style="color:{color};font-weight:700;">Ep {num}</span> '
+                f'<span style="color:{color};font-weight:700;">E{num:02d}</span> '
                 f'{title} <span style="font-size:11px;color:#bbb;">(coming soon)</span></div>',
                 unsafe_allow_html=True,
             )
         else:
             if st.button(
-                f"▶  Ep {num}: {title}",
+                f"▶  E{num:02d}: {title}",
                 key=f"grid_{ep['slug']}",
                 use_container_width=True,
             ):
                 st.session_state["selected_episode"] = ep["slug"]
                 st.rerun()
 
-    # Start this Arc CTA — links to first published episode in arc
+    # Start this Arc CTA
     pub_eps = [e for e in arc_eps if e.get("status") == "published"]
     if pub_eps:
         st.markdown("")
@@ -235,15 +241,21 @@ def render_footer():
                 About This Series
             </div>
             <div style="font-size:14px;color:#555;line-height:1.8;max-width:700px;">
-                <strong>Vinod Alat</strong> is an AI First Engineer working at the
-                intersection of automotive software and AI-native development.
+                <strong>Vinod Alat</strong> is an AI First Engineer with deep experience
+                in automotive software and AI-native development. He works at the intersection
+                of enterprise systems, AI engineering, and software architecture — where
+                the gap between what AI can generate and what production systems can trust
+                is the defining challenge.
                 <br><br>
-                This series explores how software engineering is shifting from
-                <strong>code</strong> to <strong>context</strong>,
-                from <strong>context</strong> to <strong>trust</strong>,
-                and from <strong>trust</strong> to <strong>systems</strong>.
+                This series is for <strong>engineering leaders, architects, and AI practitioners</strong>
+                who sense that AI is changing more than tooling — it's changing how engineering works.
                 <br><br>
-                <em>This is not a podcast about AI tools.
+                The 15 episodes are structured as a coherent argument, not isolated topics.
+                Each arc builds on the last:
+                <strong>code</strong> → <strong>context</strong> →
+                <strong>trust</strong> → <strong>systems</strong>.
+                <br><br>
+                <em style="color:#777;">This is not a podcast about AI tools.
                 This is a series about how AI changes engineering itself.</em>
             </div>
         </div>
@@ -273,24 +285,30 @@ def render_footer():
 def render_homepage():
     """Render the main landing page."""
 
+    # --- Series progress ---
+    all_eps = load_all_episodes(include_drafts=True)
+    pub_eps = load_all_episodes(include_drafts=False)
+    total = len(all_eps)
+    published = len(pub_eps)
+
     # --- Hero ---
     st.markdown(
-        """
+        f"""
         <div style="text-align:center;padding:36px 8px 12px 8px;">
             <div style="font-size:14px;color:#999;font-weight:600;letter-spacing:1px;margin-bottom:20px;">
                 Vinod Alat &mdash; AI First Engineer | From Code to Context to Trust
             </div>
             <div style="font-size:30px;font-weight:800;color:#1a1a1a;line-height:1.25;margin-bottom:16px;">
-                AI is rewriting software engineering.<br>
-                This 15-part series breaks the old model<br>
-                and shows what replaces it.
+                Most teams are using AI wrong.<br>
+                This series shows why &mdash;<br>
+                and what actually works.
             </div>
-            <div style="font-size:15px;color:#555;max-width:650px;margin:0 auto;line-height:1.7;margin-bottom:4px;">
-                Structured across 4 arcs:
-                <strong>The Shift</strong> &rarr;
-                <strong>The New Engineering Model</strong> &rarr;
-                <strong>The Reality Check</strong> &rarr;
-                <strong>The Future</strong>
+            <div style="font-size:15px;color:#555;max-width:650px;margin:0 auto;line-height:1.7;margin-bottom:12px;">
+                A 15-part video series that breaks the old software engineering model
+                and builds the new one &mdash; from first principles.
+            </div>
+            <div style="font-size:13px;color:#aaa;margin-bottom:4px;">
+                {published} of {total} episodes available &middot; 4 arcs
             </div>
         </div>
         """,
@@ -309,8 +327,9 @@ def render_homepage():
         st.markdown('</div>', unsafe_allow_html=True)
     with cta2:
         st.markdown('<div class="cta-secondary">', unsafe_allow_html=True)
-        if st.button("Explore by Arc", key="cta_explore", use_container_width=True):
-            pass
+        if st.button("Explore by Arc ↓", key="cta_explore", use_container_width=True):
+            st.session_state["show_arc_grid"] = True
+            st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("")

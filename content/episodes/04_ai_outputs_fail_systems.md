@@ -7,74 +7,37 @@ video_url: ""
 thumbnail: ""
 tags: ["AI failure", "correctness", "validation", "systems thinking", "trust"]
 publish_date: "2026-03-22"
-status: "published"
+status: "draft"
 featured: false
-summary: "The most dangerous AI bug is one that looks correct. AI is exceptionally good at producing code that is locally convincing and systemically wrong."
+builds_on: "model-vs-agent-vs-system"
+summary: "The code compiled. The tests passed. The review looked clean. And it still broke production. Here's why AI's most dangerous failure mode is silence."
 ---
 
-## Why AI Outputs Look Correct but Fail Systems
+### Builds on: Episode 3 — Model vs Agent vs System
 
-*The most dangerous AI bug is not the one that crashes. It is the one that looks correct, passes basic checks, and quietly breaks the system anyway.*
+### Key Takeaways
 
-### The Trust Problem
+- AI's most dangerous bug isn't the one that crashes — it's the one that looks correct and quietly breaks the system
+- Local correctness is not system correctness — "looks right" is a dangerous failure mode
+- A build passing is weak evidence. A unit test passing is weak evidence. A demo working once is weak evidence
+- AI is strong at symptom-fixing but weak at understanding causal chains across system boundaries
 
-Most teams still evaluate AI output the way they evaluate a smart intern: Does it compile? Does it look clean? Does it pass a quick review? Does the demo work?
+### The Provocative Bit
 
-That bar is too low.
+> "If AI output looks correct, that is the start of the investigation, not the end."
 
-AI is exceptionally good at producing code that is locally convincing and systemically wrong. That is why so many teams feel impressed in the first hour and uneasy in the second month.
+### Why This Matters
 
-### Local Correctness vs System Correctness
+Developer use of AI keeps rising, but trust is dropping. Stack Overflow's 2025 survey: 84% of developers use AI tools, but only 29% trust them — down 11 points from 2024. That trust gap exists because AI often solves the visible problem while missing the real system.
 
-AI models are trained to predict plausible continuations and synthesize likely solutions. They are very strong at writing code that matches surrounding patterns, resolving syntax and type issues, and producing reasonable function-level logic.
+This episode completes Arc 1 by showing exactly how "the shift" manifests in real engineering failures.
 
-But software systems do not fail at the level of "does this snippet look plausible?"
+### Who Should Watch This
 
-They fail at the level of:
-- Hidden assumptions
-- Timing behavior
-- Integration boundaries
-- State transitions
-- Contract violations
-- Deployment realities
+- Engineers who've had that gut feeling: "the patch looked great but something feels off"
+- Teams relying on AI-generated code in production systems
+- Anyone working in safety-critical or regulated domains
 
-> The problem is not that AI outputs are obviously bad. The problem is that they are often good enough to look right while still failing the system.
+### What You'll Learn
 
-### Why This Happens
-
-**The model optimizes for plausibility, not reality.** It knows patterns and conventions. It does not know your exact deployment topology, your real hardware timing profile, or the undocumented workaround your team has lived with for 18 months.
-
-**Validation signals are weaker than teams think.** A build passing is weak evidence. A unit test passing is weak evidence. A demo working once is weak evidence.
-
-**AI is strong at symptom-fixing.** AI excels at patching the immediate error and eliminating the visible warning. But systems fail because of causal chains, not isolated symptoms.
-
-**Context is almost always incomplete.** Even strong agents degrade when they operate with partial repo understanding, missing system constraints, and hidden operational assumptions.
-
-**Teams confuse "looks professional" with "is trustworthy."** Clean formatting, confident tone, sensible naming, familiar design patterns — readable code is not reliable code.
-
-### Real-World Failure Patterns
-
-In real systems, requirements conflict, systems are partially understood, state leaks across boundaries, infrastructure is noisy, and history matters. That is exactly where local plausibility stops being enough.
-
-Common patterns include:
-- A fix that improves one metric but degrades a safety-adjacent path
-- A patch that works on bench but fails after suspend/resume cycles
-- A migration that passes build and tests but violates partition ownership assumptions
-- A refactor that looks clean but shifts startup timing guarantees
-
-In every case, AI sees a code problem. The system contains a state problem, a timing problem, an ownership problem, a boundary problem.
-
-### How to Stop This
-
-1. **Make system context explicit** — encode architecture, constraints, and boundaries
-2. **Validate at system boundary** — not just unit level
-3. **Use AI for exploration, not blind closure** — treat AI suggestions as hypotheses
-4. **Treat silent success as suspicious** — passing tests are not proof of correctness
-5. **Build better harnesses** — test at integration and system level
-6. **Invest in evals sooner than you think**
-
-### The Verdict
-
-AI does not fail because it writes bad code. It fails because it does not understand the system the code lives inside.
-
-> If AI output looks correct, that is the start of the investigation, not the end.
+Five recurring patterns behind AI outputs that look correct but fail systems. Real-world examples from automotive IVI systems where plausible patches broke timing, state management, and partition assumptions. And six concrete practices to stop this from happening: making system context explicit, validating at system boundaries, and treating silent success as suspicious.
