@@ -63,10 +63,11 @@ st.markdown(
             border: none !important;
             font-weight: 700 !important;
             font-size: 16px !important;
-            min-height: 50px !important;
+            min-height: 52px !important;
             text-align: center !important;
             justify-content: center !important;
             padding-left: 0 !important;
+            border-radius: 8px !important;
         }
         .cta-primary > button:hover {
             background: #C0392B !important;
@@ -77,13 +78,24 @@ st.markdown(
             border: 2px solid #333 !important;
             font-weight: 600 !important;
             font-size: 15px !important;
-            min-height: 50px !important;
+            min-height: 52px !important;
             text-align: center !important;
             justify-content: center !important;
             padding-left: 0 !important;
+            border-radius: 8px !important;
         }
         .cta-secondary > button:hover {
             background: #f5f5f5 !important;
+        }
+
+        /* Arc CTA button */
+        .arc-cta > button {
+            font-size: 13px !important;
+            min-height: 40px !important;
+            text-align: center !important;
+            justify-content: center !important;
+            padding-left: 0 !important;
+            font-weight: 600 !important;
         }
 
         /* Force Streamlit columns to stack on mobile */
@@ -125,7 +137,7 @@ if "filter_arc" not in st.session_state:
 
 
 def render_arc_quadrant(arc_name, arc_info, all_episodes):
-    """Render a single arc quadrant card with episode buttons inline."""
+    """Render a single arc quadrant card with episode buttons and Start Arc CTA."""
     bg_colors = {
         "#E74C3C": "#fdf2f2",
         "#3498DB": "#f0f7fd",
@@ -171,6 +183,20 @@ def render_arc_quadrant(arc_name, arc_info, all_episodes):
                 st.session_state["selected_episode"] = ep["slug"]
                 st.rerun()
 
+    # Start this Arc CTA — links to first published episode in arc
+    pub_eps = [e for e in arc_eps if e.get("status") == "published"]
+    if pub_eps:
+        st.markdown("")
+        st.markdown('<div class="arc-cta">', unsafe_allow_html=True)
+        if st.button(
+            f"Start {arc_name} →",
+            key=f"start_arc_{arc_info['order']}",
+            use_container_width=True,
+        ):
+            st.session_state["selected_episode"] = pub_eps[0]["slug"]
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
 
 def render_arc_grid():
     """Render the 2x2 arc grid."""
@@ -185,6 +211,7 @@ def render_arc_grid():
         render_arc_quadrant(sorted_arcs[1][0], sorted_arcs[1][1], all_episodes)
 
     st.markdown("")
+    st.markdown("")
 
     # Row 2
     col3, col4 = st.columns(2)
@@ -196,16 +223,18 @@ def render_arc_grid():
 
 def render_footer():
     """Render About + Credits footer."""
+    st.markdown("")
     st.markdown("---")
+    st.markdown("")
 
     # About
     st.markdown(
         """
-        <div style="padding:24px 0 16px 0;">
-            <div style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">
+        <div style="padding:24px 0 20px 0;">
+            <div style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:12px;">
                 About This Series
             </div>
-            <div style="font-size:14px;color:#555;line-height:1.7;max-width:700px;">
+            <div style="font-size:14px;color:#555;line-height:1.8;max-width:700px;">
                 <strong>Vinod Alat</strong> is an AI First Engineer working at the
                 intersection of automotive software and AI-native development.
                 <br><br>
@@ -222,15 +251,17 @@ def render_footer():
         unsafe_allow_html=True,
     )
 
+    st.markdown("")
     st.markdown("---")
+    st.markdown("")
 
     # Credits
     st.markdown(
         """
-        <div style="padding:8px 0 32px 0;font-size:13px;color:#999;line-height:1.8;">
+        <div style="padding:8px 0 40px 0;font-size:13px;color:#999;line-height:2.0;">
             <strong style="color:#777;">Credits</strong><br>
-            Content &amp; narration: Vinod Alat<br>
-            Video production: Google NotebookLM<br>
+            Content and narration: Vinod Alat<br>
+            Video production assisted by NotebookLM<br>
             Platform: Streamlit<br>
             Hosting: Streamlit Community Cloud
         </div>
@@ -245,15 +276,17 @@ def render_homepage():
     # --- Hero ---
     st.markdown(
         """
-        <div style="text-align:center;padding:32px 8px 8px 8px;">
-            <div style="font-size:13px;color:#999;font-weight:600;letter-spacing:1px;margin-bottom:16px;">
+        <div style="text-align:center;padding:36px 8px 12px 8px;">
+            <div style="font-size:14px;color:#999;font-weight:600;letter-spacing:1px;margin-bottom:20px;">
                 Vinod Alat &mdash; AI First Engineer | From Code to Context to Trust
             </div>
-            <div style="font-size:28px;font-weight:800;color:#1a1a1a;line-height:1.2;margin-bottom:12px;">
-                AI is changing software engineering.<br>This series explains how.
+            <div style="font-size:30px;font-weight:800;color:#1a1a1a;line-height:1.25;margin-bottom:16px;">
+                AI is rewriting software engineering.<br>
+                This 15-part series breaks the old model<br>
+                and shows what replaces it.
             </div>
-            <div style="font-size:15px;color:#555;max-width:650px;margin:0 auto;line-height:1.6;margin-bottom:8px;">
-                A 15-part video series structured across 4 arcs:
+            <div style="font-size:15px;color:#555;max-width:650px;margin:0 auto;line-height:1.7;margin-bottom:4px;">
+                Structured across 4 arcs:
                 <strong>The Shift</strong> &rarr;
                 <strong>The New Engineering Model</strong> &rarr;
                 <strong>The Reality Check</strong> &rarr;
@@ -264,44 +297,52 @@ def render_homepage():
         unsafe_allow_html=True,
     )
 
+    st.markdown("")
+
     # --- CTA Buttons ---
     cta1, cta2 = st.columns(2)
     with cta1:
         st.markdown('<div class="cta-primary">', unsafe_allow_html=True)
-        if st.button("Start with Episode 1", key="cta_start", use_container_width=True):
+        if st.button("Start Here → Episode 1", key="cta_start", use_container_width=True):
             st.session_state["selected_episode"] = "code-vs-trust"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     with cta2:
         st.markdown('<div class="cta-secondary">', unsafe_allow_html=True)
         if st.button("Explore by Arc", key="cta_explore", use_container_width=True):
-            st.markdown('<script>document.getElementById("arc-grid").scrollIntoView()</script>', unsafe_allow_html=True)
+            pass
         st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("")
 
     # --- Positioning Line ---
     st.markdown(
         """
-        <div style="text-align:center;padding:20px 8px 8px 8px;">
-            <div style="font-size:14px;color:#888;font-style:italic;line-height:1.5;">
+        <div style="text-align:center;padding:16px 8px 8px 8px;">
+            <div style="font-size:15px;color:#777;font-style:italic;line-height:1.6;">
                 This is not a podcast about AI tools.<br>
-                This is a series about how AI changes engineering itself.
+                This is about how AI changes engineering itself.
             </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
+    st.markdown("")
     st.markdown("---")
+    st.markdown("")
 
     # --- Arc Grid ---
-    st.markdown('<div id="arc-grid"></div>', unsafe_allow_html=True)
     render_arc_grid()
 
     st.markdown("")
+    st.markdown("")
     st.markdown("---")
+    st.markdown("")
 
     # --- Filter & Search ---
     st.markdown("## All Episodes")
+    st.markdown("")
 
     search = st.text_input("Search episodes", placeholder="Search by title or keyword...")
 
@@ -322,6 +363,7 @@ def render_homepage():
     with col_tag:
         selected_tag = st.selectbox("Filter by Tag", ["All"] + all_tags)
 
+    st.markdown("")
     st.markdown("")
 
     # --- Episode List ---
