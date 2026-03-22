@@ -382,6 +382,12 @@ def render_homepage():
     total = len(all_eps)
     published = len(pub_eps)
 
+    # Scroll to top
+    st.markdown(
+        '<script>window.parent.document.querySelector("section.main").scrollTop = 0;</script>',
+        unsafe_allow_html=True,
+    )
+
     # --- Author + Hero ---
     st.markdown(
         f"""

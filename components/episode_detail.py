@@ -69,6 +69,12 @@ def render_episode_detail(episode):
 
     total_episodes = len(load_all_episodes(include_drafts=True))
 
+    # Scroll to top
+    st.markdown(
+        '<script>window.parent.document.querySelector("section.main").scrollTop = 0;</script>',
+        unsafe_allow_html=True,
+    )
+
     # Back button
     if st.button("← Back to Episodes"):
         st.session_state["selected_episode"] = None
