@@ -42,7 +42,11 @@ st.markdown(
         header { visibility: hidden; }
 
         /* Buttons — large touch targets, left-aligned text */
-        .stButton > button {
+        .stButton > button,
+        .stButton > button > div,
+        .stButton > button > div > p,
+        [data-testid="stButton"] > button,
+        [data-testid="baseButton-secondary"] {
             border: 1px solid #e0e0e0;
             background: #fafafa;
             color: #333;
@@ -54,7 +58,8 @@ st.markdown(
             justify-content: flex-start !important;
             padding-left: 12px !important;
         }
-        .stButton > button:hover {
+        .stButton > button:hover,
+        [data-testid="baseButton-secondary"]:hover {
             border-color: #333;
             background: #f0f0f0;
         }
