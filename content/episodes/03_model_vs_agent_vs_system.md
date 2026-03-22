@@ -3,7 +3,7 @@ title: "Model vs Agent vs System"
 slug: "model-vs-agent-vs-system"
 episode_number: 3
 arc: "The Shift"
-video_url: ""
+video_url: "https://drive.google.com/file/d/1cBJh1Xs2UkvWxM2wiUS4FsmhZh4HdW5V/view?usp=drive_link"
 thumbnail: ""
 tags: ["models", "agents", "systems", "architecture", "AI engineering"]
 publish_date: "2026-03-22"
