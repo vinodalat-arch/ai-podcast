@@ -38,7 +38,7 @@ st.markdown(
         footer { visibility: hidden; }
         header { visibility: hidden; }
 
-        /* Buttons — large touch targets */
+        /* Buttons — large touch targets, left-aligned text */
         .stButton > button {
             border: 1px solid #e0e0e0;
             background: #fafafa;
@@ -47,6 +47,9 @@ st.markdown(
             transition: all 0.2s;
             min-height: 44px;
             font-size: 14px;
+            text-align: left !important;
+            justify-content: flex-start !important;
+            padding-left: 12px !important;
         }
         .stButton > button:hover {
             border-color: #333;
