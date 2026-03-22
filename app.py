@@ -24,10 +24,14 @@ st.markdown(
         /* Base — mobile first */
         .main .block-container {
             max-width: 1000px;
-            padding-top: 1.5rem;
+            padding-top: 0.5rem;
             padding-left: 1rem;
             padding-right: 1rem;
         }
+        /* Reduce top gap */
+        .block-container { padding-top: 0.5rem !important; }
+        /* Subtle dividers instead of default heavy hr */
+        hr { border: none !important; border-top: 1px solid #f0f0f0 !important; margin: 8px 0 !important; }
         h1 { font-weight: 800; color: #1a1a1a; font-size: 28px !important; }
         h2 { font-weight: 700; color: #2a2a2a; font-size: 22px !important; }
         h3 { font-weight: 600; color: #333; font-size: 18px !important; }

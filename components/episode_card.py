@@ -73,7 +73,7 @@ def render_episode_card(episode):
                 <div style="font-size: 12px; color: #999; margin-bottom: 6px;">
                     {' &middot; '.join(tags[:4])}
                 </div>
-                {f'<div style="font-size:12px;color:#888;font-style:italic;border-left:2px solid {arc_color};padding-left:8px;margin-top:4px;">"{industry_quote}" <span style="color:#aaa;">— {quote_author}</span></div>' if industry_quote else ''}
+                {f'<div style="font-size:12px;color:#888;font-style:italic;border-left:2px solid {arc_color};padding-left:8px;margin-top:4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">"{industry_quote}"</div><div style="font-size:11px;color:#aaa;padding-left:10px;margin-top:2px;">— {quote_author}</div>' if industry_quote else ''}
             </div>
         </div>
         """,
