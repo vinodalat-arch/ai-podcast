@@ -24,7 +24,7 @@ st.markdown(
     <style>
         /* Base — mobile first */
         .main .block-container {
-            max-width: 1100px;
+            max-width: 1000px;
             padding-top: 1.5rem;
             padding-left: 1rem;
             padding-right: 1rem;
@@ -56,90 +56,46 @@ st.markdown(
             background: #f0f0f0;
         }
 
-        /* Arc grid container */
-        .arc-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin-bottom: 24px;
+        /* CTA buttons */
+        .cta-primary > button {
+            background: #E74C3C !important;
+            color: white !important;
+            border: none !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+            min-height: 50px !important;
+            text-align: center !important;
+            justify-content: center !important;
+            padding-left: 0 !important;
+        }
+        .cta-primary > button:hover {
+            background: #C0392B !important;
+        }
+        .cta-secondary > button {
+            background: white !important;
+            color: #333 !important;
+            border: 2px solid #333 !important;
+            font-weight: 600 !important;
+            font-size: 15px !important;
+            min-height: 50px !important;
+            text-align: center !important;
+            justify-content: center !important;
+            padding-left: 0 !important;
+        }
+        .cta-secondary > button:hover {
+            background: #f5f5f5 !important;
         }
 
-        /* Arc quadrant card */
-        .arc-quad {
-            border-radius: 12px;
-            padding: 20px;
-            min-height: auto;
-        }
-        .arc-quad-label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
-        .arc-quad-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-        }
-        .arc-quad-desc {
-            font-size: 13px;
-            color: #777;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-        .arc-ep-item {
-            margin-bottom: 8px;
-            padding: 6px 0;
-        }
-        .arc-ep-num {
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .arc-ep-title {
-            font-size: 14px;
-            color: #333;
-        }
-        .arc-ep-draft {
-            font-size: 11px;
-            color: #bbb;
-        }
-
-        /* Hero section */
-        .hero-section {
-            text-align: center;
-            padding: 24px 8px 16px 8px;
-        }
-        .hero-subtitle {
-            font-size: 12px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-        .hero-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-            line-height: 1.2;
-        }
-        .hero-desc {
-            font-size: 15px;
-            color: #555;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        /* Episode card responsive */
-        .ep-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            background: white;
+        /* Force Streamlit columns to stack on mobile */
+        @media (max-width: 767px) {
+            [data-testid="column"] {
+                width: 100% !important;
+                flex: 100% !important;
+                min-width: 100% !important;
+            }
+            .stSelectbox, .stTextInput {
+                margin-bottom: 8px;
+            }
         }
 
         /* Desktop overrides */
@@ -150,35 +106,6 @@ st.markdown(
             }
             h1 { font-size: 42px !important; }
             h2 { font-size: 28px !important; }
-            .arc-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .arc-quad {
-                padding: 24px;
-                min-height: 220px;
-            }
-            .hero-section {
-                padding: 40px 16px 20px 16px;
-            }
-            .hero-title {
-                font-size: 42px;
-            }
-            .hero-desc {
-                font-size: 18px;
-            }
-        }
-
-        /* Force Streamlit columns to stack on mobile */
-        @media (max-width: 767px) {
-            [data-testid="column"] {
-                width: 100% !important;
-                flex: 100% !important;
-                min-width: 100% !important;
-            }
-            /* Stack filter inputs vertically */
-            .stSelectbox, .stTextInput {
-                margin-bottom: 8px;
-            }
         }
 
         /* Video responsive */
@@ -267,21 +194,97 @@ def render_arc_grid():
         render_arc_quadrant(sorted_arcs[3][0], sorted_arcs[3][1], all_episodes)
 
 
+def render_footer():
+    """Render About + Credits footer."""
+    st.markdown("---")
+
+    # About
+    st.markdown(
+        """
+        <div style="padding:24px 0 16px 0;">
+            <div style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">
+                About This Series
+            </div>
+            <div style="font-size:14px;color:#555;line-height:1.7;max-width:700px;">
+                <strong>Vinod Alat</strong> is an AI First Engineer working at the
+                intersection of automotive software and AI-native development.
+                <br><br>
+                This series explores how software engineering is shifting from
+                <strong>code</strong> to <strong>context</strong>,
+                from <strong>context</strong> to <strong>trust</strong>,
+                and from <strong>trust</strong> to <strong>systems</strong>.
+                <br><br>
+                <em>This is not a podcast about AI tools.
+                This is a series about how AI changes engineering itself.</em>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("---")
+
+    # Credits
+    st.markdown(
+        """
+        <div style="padding:8px 0 32px 0;font-size:13px;color:#999;line-height:1.8;">
+            <strong style="color:#777;">Credits</strong><br>
+            Content &amp; narration: Vinod Alat<br>
+            Video production: Google NotebookLM<br>
+            Platform: Streamlit<br>
+            Hosting: Streamlit Community Cloud
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_homepage():
     """Render the main landing page."""
+
     # --- Hero ---
     st.markdown(
         """
-        <div class="hero-section">
-            <div style="font-size:13px;color:#999;font-weight:600;letter-spacing:1px;margin-bottom:6px;">
-                Vinod Alat &mdash; AI First Engineer
+        <div style="text-align:center;padding:32px 8px 8px 8px;">
+            <div style="font-size:13px;color:#999;font-weight:600;letter-spacing:1px;margin-bottom:16px;">
+                Vinod Alat &mdash; AI First Engineer | From Code to Context to Trust
             </div>
-            <div class="hero-subtitle">AI Thought Leadership Series</div>
-            <div class="hero-title">The Shift in Software Engineering</div>
-            <div class="hero-desc">
-                A 15-episode series exploring how software engineering is shifting
-                from <strong>code</strong> to <strong>context</strong> to
-                <strong>trust</strong> to <strong>systems</strong>.
+            <div style="font-size:28px;font-weight:800;color:#1a1a1a;line-height:1.2;margin-bottom:12px;">
+                AI is changing software engineering.<br>This series explains how.
+            </div>
+            <div style="font-size:15px;color:#555;max-width:650px;margin:0 auto;line-height:1.6;margin-bottom:8px;">
+                A 15-part video series structured across 4 arcs:
+                <strong>The Shift</strong> &rarr;
+                <strong>The New Engineering Model</strong> &rarr;
+                <strong>The Reality Check</strong> &rarr;
+                <strong>The Future</strong>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # --- CTA Buttons ---
+    cta1, cta2 = st.columns(2)
+    with cta1:
+        st.markdown('<div class="cta-primary">', unsafe_allow_html=True)
+        if st.button("Start with Episode 1", key="cta_start", use_container_width=True):
+            st.session_state["selected_episode"] = "code-vs-trust"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    with cta2:
+        st.markdown('<div class="cta-secondary">', unsafe_allow_html=True)
+        if st.button("Explore by Arc", key="cta_explore", use_container_width=True):
+            st.markdown('<script>document.getElementById("arc-grid").scrollIntoView()</script>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- Positioning Line ---
+    st.markdown(
+        """
+        <div style="text-align:center;padding:20px 8px 8px 8px;">
+            <div style="font-size:14px;color:#888;font-style:italic;line-height:1.5;">
+                This is not a podcast about AI tools.<br>
+                This is a series about how AI changes engineering itself.
             </div>
         </div>
         """,
@@ -291,8 +294,10 @@ def render_homepage():
     st.markdown("---")
 
     # --- Arc Grid ---
+    st.markdown('<div id="arc-grid"></div>', unsafe_allow_html=True)
     render_arc_grid()
 
+    st.markdown("")
     st.markdown("---")
 
     # --- Filter & Search ---
@@ -317,6 +322,8 @@ def render_homepage():
     with col_tag:
         selected_tag = st.selectbox("Filter by Tag", ["All"] + all_tags)
 
+    st.markdown("")
+
     # --- Episode List ---
     episodes = load_all_episodes()
 
@@ -340,6 +347,9 @@ def render_homepage():
     else:
         for episode in episodes:
             render_episode_card(episode)
+
+    # --- Footer ---
+    render_footer()
 
 
 # --- Main Router ---

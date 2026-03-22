@@ -161,3 +161,13 @@ def render_episode_detail(episode):
             ):
                 st.session_state["selected_episode"] = rel_slug
                 st.rerun()
+
+    # Author footer on episode page
+    st.markdown("---")
+    st.markdown(
+        '<div style="font-size:13px;color:#999;padding:8px 0 24px 0;line-height:1.6;">'
+        '<strong style="color:#777;">Vinod Alat</strong> &mdash; AI First Engineer | '
+        'From Code to Context to Trust'
+        '</div>',
+        unsafe_allow_html=True,
+    )
