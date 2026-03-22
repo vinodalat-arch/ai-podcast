@@ -3,11 +3,11 @@ title: "Why AI Outputs Look Correct but Fail Systems"
 slug: "ai-outputs-fail-systems"
 episode_number: 4
 arc: "The Shift"
-video_url: ""
+video_url: "https://drive.google.com/file/d/12pF9-ss8xNuP8J9S4rYR4HzddYiSakiV/view?usp=drive_link"
 thumbnail: ""
 tags: ["AI failure", "correctness", "validation", "systems thinking", "trust"]
 publish_date: "2026-03-22"
-status: "draft"
+status: "published"
 featured: false
 builds_on: "model-vs-agent-vs-system"
 industry_quote: "The biggest risk with AI isn't that it's wrong. It's that it's confidently wrong."
