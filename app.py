@@ -437,6 +437,26 @@ def render_homepage():
     )
 
     st.markdown("")
+
+    # --- Series Marquee Quote ---
+    st.markdown(
+        """
+        <div style="text-align:center;padding:16px 12px;margin:8px 0;
+                    background:#f8f9fa;border-radius:10px;">
+            <div style="font-size:17px;color:#1a1a1a;font-weight:600;
+                        font-style:italic;line-height:1.5;">
+                "You don't scale AI by centralizing knowledge.<br>
+                You scale it by giving it context, access, and freedom."
+            </div>
+            <div style="font-size:12px;color:#999;margin-top:8px;">
+                — Vinod Alat
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("")
     st.markdown("---")
     st.markdown("")
 
