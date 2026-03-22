@@ -195,7 +195,7 @@ if "filter_arc" not in st.session_state:
 
 
 def render_arc_quadrant(arc_name, arc_info, all_episodes):
-    """Render a single arc quadrant card + buttons."""
+    """Render a single arc quadrant card with episode buttons inline."""
     bg_colors = {
         "#E74C3C": "#fdf2f2",
         "#3498DB": "#f0f7fd",
@@ -207,45 +207,39 @@ def render_arc_quadrant(arc_name, arc_info, all_episodes):
     arc_eps = [e for e in all_episodes if e.get("arc") == arc_name]
     arc_eps.sort(key=lambda e: e.get("episode_number", 999))
 
-    ep_items = ""
+    # Arc header
+    st.markdown(
+        f'<div style="background:{bg};border:2px solid {color}22;border-top:4px solid {color};'
+        f'border-radius:12px;padding:20px 20px 8px 20px;">'
+        f'<div style="font-size:11px;color:{color};font-weight:700;text-transform:uppercase;'
+        f'letter-spacing:1px;margin-bottom:4px;">Arc {arc_info["order"]}</div>'
+        f'<div style="font-size:18px;font-weight:800;color:#1a1a1a;margin-bottom:6px;">{arc_name}</div>'
+        f'<div style="font-size:13px;color:#777;margin-bottom:8px;line-height:1.4;">'
+        f'{arc_info["description"]}</div></div>',
+        unsafe_allow_html=True,
+    )
+
+    # Episode buttons (published) and labels (drafts)
     for ep in arc_eps:
         num = ep.get("episode_number", 0)
         title = ep.get("title", "")
         is_draft = ep.get("status") != "published"
-        opacity = "0.4" if is_draft else "1"
-        draft_label = ' <span style="font-size:11px;color:#bbb;">(coming soon)</span>' if is_draft else ""
-        ep_items += (
-            f'<div style="opacity:{opacity};margin-bottom:8px;padding:4px 0;">'
-            f'<span style="color:{color};font-weight:700;font-size:14px;">Ep {num}</span> '
-            f'<span style="font-size:14px;color:#333;">{title}</span>'
-            f'{draft_label}</div>'
-        )
 
-    st.markdown(
-        f'<div style="background:{bg};border:2px solid {color}22;border-top:4px solid {color};'
-        f'border-radius:12px;padding:20px;min-height:180px;">'
-        f'<div style="font-size:11px;color:{color};font-weight:700;text-transform:uppercase;'
-        f'letter-spacing:1px;margin-bottom:4px;">Arc {arc_info["order"]}</div>'
-        f'<div style="font-size:18px;font-weight:800;color:#1a1a1a;margin-bottom:6px;">{arc_name}</div>'
-        f'<div style="font-size:13px;color:#777;margin-bottom:12px;line-height:1.4;">'
-        f'{arc_info["description"]}</div>'
-        f'<div>{ep_items}</div></div>',
-        unsafe_allow_html=True,
-    )
-
-    # Clickable buttons for published episodes
-    pub_eps = [e for e in arc_eps if e.get("status") == "published"]
-    if pub_eps:
-        cols = st.columns(len(pub_eps))
-        for idx, ep in enumerate(pub_eps):
-            with cols[idx]:
-                if st.button(
-                    f"▶ Ep {ep['episode_number']}",
-                    key=f"grid_{ep['slug']}",
-                    use_container_width=True,
-                ):
-                    st.session_state["selected_episode"] = ep["slug"]
-                    st.rerun()
+        if is_draft:
+            st.markdown(
+                f'<div style="opacity:0.4;padding:4px 8px;font-size:13px;">'
+                f'<span style="color:{color};font-weight:700;">Ep {num}</span> '
+                f'{title} <span style="font-size:11px;color:#bbb;">(coming soon)</span></div>',
+                unsafe_allow_html=True,
+            )
+        else:
+            if st.button(
+                f"▶  Ep {num}: {title}",
+                key=f"grid_{ep['slug']}",
+                use_container_width=True,
+            ):
+                st.session_state["selected_episode"] = ep["slug"]
+                st.rerun()
 
 
 def render_arc_grid():
