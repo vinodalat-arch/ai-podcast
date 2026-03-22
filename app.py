@@ -276,6 +276,9 @@ def render_homepage():
     st.markdown(
         """
         <div class="hero-section">
+            <div style="font-size:13px;color:#999;font-weight:600;letter-spacing:1px;margin-bottom:6px;">
+                Vinod Alat &mdash; AI First Engineer
+            </div>
             <div class="hero-subtitle">AI Thought Leadership Series</div>
             <div class="hero-title">The Shift in Software Engineering</div>
             <div class="hero-desc">
