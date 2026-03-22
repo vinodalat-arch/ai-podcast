@@ -86,6 +86,21 @@ st.markdown(
         .cta-secondary > button:hover {
             background: #f5f5f5 !important;
         }
+        .cta-continue > button {
+            background: #2ECC71 !important;
+            color: white !important;
+            border: none !important;
+            font-weight: 700 !important;
+            font-size: 15px !important;
+            min-height: 48px !important;
+            text-align: center !important;
+            justify-content: center !important;
+            padding-left: 0 !important;
+            border-radius: 8px !important;
+        }
+        .cta-continue > button:hover {
+            background: #27AE60 !important;
+        }
 
         /* Arc CTA button */
         .arc-cta > button {
@@ -133,12 +148,12 @@ if "selected_episode" not in st.session_state:
     st.session_state["selected_episode"] = None
 if "filter_arc" not in st.session_state:
     st.session_state["filter_arc"] = "All"
-if "show_arc_grid" not in st.session_state:
-    st.session_state["show_arc_grid"] = False
+if "last_watched" not in st.session_state:
+    st.session_state["last_watched"] = None
 
 
 def render_arc_quadrant(arc_name, arc_info, all_episodes):
-    """Render a single arc quadrant card with episode buttons and Start Arc CTA."""
+    """Render a single arc quadrant card with episode buttons and arc CTAs."""
     bg_colors = {
         "#E74C3C": "#fdf2f2",
         "#3498DB": "#f0f7fd",
@@ -149,8 +164,9 @@ def render_arc_quadrant(arc_name, arc_info, all_episodes):
     bg = bg_colors.get(color, "#fafafa")
     arc_eps = [e for e in all_episodes if e.get("arc") == arc_name]
     arc_eps.sort(key=lambda e: e.get("episode_number", 999))
+    pub_eps = [e for e in arc_eps if e.get("status") == "published"]
 
-    pub_count = len([e for e in arc_eps if e.get("status") == "published"])
+    pub_count = len(pub_eps)
     total_count = len(arc_eps)
 
     # Arc header
@@ -187,20 +203,56 @@ def render_arc_quadrant(arc_name, arc_info, all_episodes):
                 use_container_width=True,
             ):
                 st.session_state["selected_episode"] = ep["slug"]
+                st.session_state["last_watched"] = ep["slug"]
                 st.rerun()
 
-    # Start this Arc CTA
-    pub_eps = [e for e in arc_eps if e.get("status") == "published"]
+    # Arc CTAs
     if pub_eps:
         st.markdown("")
+        # Check if user has watched something in this arc
+        last = st.session_state.get("last_watched")
+        last_in_arc = None
+        if last:
+            for ep in pub_eps:
+                if ep["slug"] == last:
+                    last_in_arc = ep
+                    break
+
         st.markdown('<div class="arc-cta">', unsafe_allow_html=True)
-        if st.button(
-            f"Start {arc_name} →",
-            key=f"start_arc_{arc_info['order']}",
-            use_container_width=True,
-        ):
-            st.session_state["selected_episode"] = pub_eps[0]["slug"]
-            st.rerun()
+        if last_in_arc:
+            # Find next unwatched in this arc
+            next_arc_ep = None
+            for ep in pub_eps:
+                if ep["episode_number"] > last_in_arc["episode_number"]:
+                    next_arc_ep = ep
+                    break
+            if next_arc_ep:
+                if st.button(
+                    f"Continue {arc_name} → E{next_arc_ep['episode_number']:02d}",
+                    key=f"continue_arc_{arc_info['order']}",
+                    use_container_width=True,
+                ):
+                    st.session_state["selected_episode"] = next_arc_ep["slug"]
+                    st.session_state["last_watched"] = next_arc_ep["slug"]
+                    st.rerun()
+            else:
+                if st.button(
+                    f"Start {arc_name} →",
+                    key=f"start_arc_{arc_info['order']}",
+                    use_container_width=True,
+                ):
+                    st.session_state["selected_episode"] = pub_eps[0]["slug"]
+                    st.session_state["last_watched"] = pub_eps[0]["slug"]
+                    st.rerun()
+        else:
+            if st.button(
+                f"Start {arc_name} →",
+                key=f"start_arc_{arc_info['order']}",
+                use_container_width=True,
+            ):
+                st.session_state["selected_episode"] = pub_eps[0]["slug"]
+                st.session_state["last_watched"] = pub_eps[0]["slug"]
+                st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
 
@@ -209,7 +261,6 @@ def render_arc_grid():
     all_episodes = load_all_episodes(include_drafts=True)
     sorted_arcs = sorted(ARCS.items(), key=lambda x: x[1]["order"])
 
-    # Row 1
     col1, col2 = st.columns(2)
     with col1:
         render_arc_quadrant(sorted_arcs[0][0], sorted_arcs[0][1], all_episodes)
@@ -219,12 +270,57 @@ def render_arc_grid():
     st.markdown("")
     st.markdown("")
 
-    # Row 2
     col3, col4 = st.columns(2)
     with col3:
         render_arc_quadrant(sorted_arcs[2][0], sorted_arcs[2][1], all_episodes)
     with col4:
         render_arc_quadrant(sorted_arcs[3][0], sorted_arcs[3][1], all_episodes)
+
+
+def render_continuity_section():
+    """Render the follow/continuity layer."""
+    last = st.session_state.get("last_watched")
+    pub_eps = load_all_episodes()
+
+    if not last or not pub_eps:
+        return
+
+    last_ep = get_episode_by_slug(last)
+    if not last_ep:
+        return
+
+    # Find recommended next
+    next_ep = None
+    for ep in pub_eps:
+        if ep["episode_number"] > last_ep["episode_number"]:
+            next_ep = ep
+            break
+
+    if not next_ep:
+        return
+
+    st.markdown(
+        f'<div style="background:#f0fdf5;border:2px solid #2ECC7133;border-radius:12px;'
+        f'padding:20px;text-align:center;">'
+        f'<div style="font-size:13px;color:#2ECC71;font-weight:700;text-transform:uppercase;'
+        f'letter-spacing:1px;margin-bottom:6px;">Continue where you left off</div>'
+        f'<div style="font-size:15px;color:#555;margin-bottom:4px;">'
+        f'You watched E{last_ep["episode_number"]:02d}. Next up:</div>'
+        f'<div style="font-size:17px;font-weight:700;color:#1a1a1a;">'
+        f'E{next_ep["episode_number"]:02d}: {next_ep["title"]}</div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown('<div class="cta-continue">', unsafe_allow_html=True)
+    if st.button(
+        f"Continue → E{next_ep['episode_number']:02d}",
+        key="continue_watching",
+        use_container_width=True,
+    ):
+        st.session_state["selected_episode"] = next_ep["slug"]
+        st.session_state["last_watched"] = next_ep["slug"]
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_footer():
@@ -241,19 +337,11 @@ def render_footer():
                 About This Series
             </div>
             <div style="font-size:14px;color:#555;line-height:1.8;max-width:700px;">
-                <strong>Vinod Alat</strong> is an AI First Engineer with deep experience
-                in automotive software and AI-native development. He works at the intersection
-                of enterprise systems, AI engineering, and software architecture — where
-                the gap between what AI can generate and what production systems can trust
-                is the defining challenge.
+                <strong>Vinod Alat</strong> is an AI First Engineer working at the
+                intersection of automotive software and AI-native systems.
                 <br><br>
-                This series is for <strong>engineering leaders, architects, and AI practitioners</strong>
-                who sense that AI is changing more than tooling — it's changing how engineering works.
-                <br><br>
-                The 15 episodes are structured as a coherent argument, not isolated topics.
-                Each arc builds on the last:
-                <strong>code</strong> → <strong>context</strong> →
-                <strong>trust</strong> → <strong>systems</strong>.
+                This series explores the shift:<br>
+                <strong>Code → Context → Trust → Systems</strong>
                 <br><br>
                 <em style="color:#777;">This is not a podcast about AI tools.
                 This is a series about how AI changes engineering itself.</em>
@@ -285,30 +373,31 @@ def render_footer():
 def render_homepage():
     """Render the main landing page."""
 
-    # --- Series progress ---
     all_eps = load_all_episodes(include_drafts=True)
     pub_eps = load_all_episodes(include_drafts=False)
     total = len(all_eps)
     published = len(pub_eps)
 
-    # --- Hero ---
+    # --- Author + Hero ---
     st.markdown(
         f"""
-        <div style="text-align:center;padding:36px 8px 12px 8px;">
-            <div style="font-size:14px;color:#999;font-weight:600;letter-spacing:1px;margin-bottom:20px;">
-                Vinod Alat &mdash; AI First Engineer | From Code to Context to Trust
+        <div style="text-align:center;padding:36px 8px 0 8px;">
+            <div style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">
+                Vinod Alat
             </div>
-            <div style="font-size:30px;font-weight:800;color:#1a1a1a;line-height:1.25;margin-bottom:16px;">
-                Most teams are using AI wrong.<br>
-                This series shows why &mdash;<br>
-                and what actually works.
+            <div style="font-size:13px;color:#999;font-weight:500;margin-bottom:24px;">
+                AI First Engineer<br>
+                From Code → Context → Trust → Systems
             </div>
-            <div style="font-size:15px;color:#555;max-width:650px;margin:0 auto;line-height:1.7;margin-bottom:12px;">
-                A 15-part video series that breaks the old software engineering model
-                and builds the new one &mdash; from first principles.
+            <div style="font-size:30px;font-weight:800;color:#1a1a1a;line-height:1.25;margin-bottom:14px;">
+                AI is rewriting software engineering.
             </div>
-            <div style="font-size:13px;color:#aaa;margin-bottom:4px;">
-                {published} of {total} episodes available &middot; 4 arcs
+            <div style="font-size:17px;color:#555;line-height:1.5;margin-bottom:6px;">
+                Most teams are still optimizing for the old model.<br>
+                This series shows what replaces it.
+            </div>
+            <div style="font-size:13px;color:#aaa;margin-top:12px;">
+                {published} of {total} episodes &middot; 4 arcs
             </div>
         </div>
         """,
@@ -323,13 +412,13 @@ def render_homepage():
         st.markdown('<div class="cta-primary">', unsafe_allow_html=True)
         if st.button("Start Here → Episode 1", key="cta_start", use_container_width=True):
             st.session_state["selected_episode"] = "code-vs-trust"
+            st.session_state["last_watched"] = "code-vs-trust"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     with cta2:
         st.markdown('<div class="cta-secondary">', unsafe_allow_html=True)
         if st.button("Explore by Arc ↓", key="cta_explore", use_container_width=True):
-            st.session_state["show_arc_grid"] = True
-            st.rerun()
+            pass  # scrolls naturally — arc grid is right below
         st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("")
@@ -337,7 +426,7 @@ def render_homepage():
     # --- Positioning Line ---
     st.markdown(
         """
-        <div style="text-align:center;padding:16px 8px 8px 8px;">
+        <div style="text-align:center;padding:12px 8px 8px 8px;">
             <div style="font-size:15px;color:#777;font-style:italic;line-height:1.6;">
                 This is not a podcast about AI tools.<br>
                 This is about how AI changes engineering itself.
@@ -349,6 +438,11 @@ def render_homepage():
 
     st.markdown("")
     st.markdown("---")
+    st.markdown("")
+
+    # --- Continue where you left off ---
+    render_continuity_section()
+
     st.markdown("")
 
     # --- Arc Grid ---
@@ -382,7 +476,6 @@ def render_homepage():
     with col_tag:
         selected_tag = st.selectbox("Filter by Tag", ["All"] + all_tags)
 
-    st.markdown("")
     st.markdown("")
 
     # --- Episode List ---
@@ -418,6 +511,8 @@ def main():
     selected_slug = st.session_state.get("selected_episode")
 
     if selected_slug:
+        # Track last watched
+        st.session_state["last_watched"] = selected_slug
         episode = get_episode_by_slug(selected_slug)
         if episode:
             render_episode_detail(episode)
