@@ -10,6 +10,8 @@ publish_date: "2026-03-22"
 status: "draft"
 featured: false
 builds_on: "model-vs-agent-vs-system"
+industry_quote: "The biggest risk with AI isn't that it's wrong. It's that it's confidently wrong."
+quote_author: "Satya Nadella, CEO Microsoft (2023)"
 summary: "The code compiled. The tests passed. The review looked clean. And it still broke production. AI's most dangerous failure mode is silence."
 ---
 

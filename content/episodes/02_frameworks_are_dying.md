@@ -10,6 +10,8 @@ publish_date: "2026-03-22"
 status: "published"
 featured: false
 builds_on: "code-vs-trust"
+industry_quote: "The hottest new programming language is English."
+quote_author: "Andrej Karpathy, ex-Tesla AI Director (2023)"
 summary: "The framework you depend on? AI just made half of it irrelevant. Here's what survives — and what quietly dies."
 ---
 

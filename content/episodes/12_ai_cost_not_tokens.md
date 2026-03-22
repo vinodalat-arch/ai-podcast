@@ -9,6 +9,9 @@ tags: ["AI cost", "tokens", "efficiency", "ROI"]
 publish_date: ""
 status: "draft"
 featured: false
+builds_on: "control-vs-capability"
+industry_quote: "The cost of AI is not the API call. It's the cost of getting it wrong."
+quote_author: "Sam Altman, CEO OpenAI (2024)"
 summary: "Token pricing is not the main cost driver. Bad context, weak loops, and rework cost more than model usage."
 ---
 

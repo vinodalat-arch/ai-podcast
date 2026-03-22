@@ -9,6 +9,9 @@ tags: ["automation", "requirements", "execution", "future"]
 publish_date: ""
 status: "draft"
 featured: false
+builds_on: "ai-dev-operating-system"
+industry_quote: "In the future, you'll describe what you want and the system will build it."
+quote_author: "Sam Altman, CEO OpenAI (2024)"
 summary: "Requirements can increasingly flow into implementation and validation through AI systems. The future is about narrowing the gap between intent and execution."
 ---
 

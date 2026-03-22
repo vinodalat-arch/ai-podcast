@@ -64,6 +64,8 @@ def render_episode_detail(episode):
     body = episode.get("body", "")
     video_url = episode.get("video_url", "")
     builds_on = episode.get("builds_on", "")
+    industry_quote = episode.get("industry_quote", "")
+    quote_author = episode.get("quote_author", "")
 
     total_episodes = len(load_all_episodes(include_drafts=True))
 
@@ -123,6 +125,19 @@ def render_episode_detail(episode):
         '</div>',
         unsafe_allow_html=True,
     )
+
+    # Industry quote
+    if industry_quote:
+        st.markdown("")
+        st.markdown(
+            f'<div style="background:#f8f9fa;border-left:3px solid {arc_color};'
+            f'border-radius:0 8px 8px 0;padding:16px 20px;margin:8px 0;">'
+            f'<div style="font-size:15px;color:#333;font-style:italic;line-height:1.5;">'
+            f'"{industry_quote}"</div>'
+            f'<div style="font-size:12px;color:#999;margin-top:8px;font-style:normal;">'
+            f'— {quote_author}</div></div>',
+            unsafe_allow_html=True,
+        )
 
     st.markdown("")
     st.markdown("---")

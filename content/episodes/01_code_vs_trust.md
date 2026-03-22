@@ -10,6 +10,8 @@ publish_date: "2026-03-22"
 status: "published"
 featured: true
 builds_on: ""
+industry_quote: "If your 500K engineers aren't spending $250K worth of tokens, something is wrong."
+quote_author: "Jensen Huang, CEO NVIDIA (2024)"
 summary: "Your team writes more code than ever. But can you trust any of it? AI made building easy — it made trusting software the hard part."
 ---
 

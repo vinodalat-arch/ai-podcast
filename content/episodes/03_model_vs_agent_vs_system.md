@@ -10,6 +10,8 @@ publish_date: "2026-03-22"
 status: "published"
 featured: false
 builds_on: "frameworks-are-dying"
+industry_quote: "Copilot is not the endgame. Agents are."
+quote_author: "Satya Nadella, CEO Microsoft (2024)"
 summary: "Your team is debating which AI model to use. They're asking the wrong question. The model is the least important layer."
 ---
 

@@ -9,6 +9,9 @@ tags: ["context", "organizational design", "AI systems"]
 publish_date: ""
 status: "draft"
 featured: false
+builds_on: "from-code-to-context"
+industry_quote: "Data is not the new oil. Context is the new oil."
+quote_author: "Jensen Huang, CEO NVIDIA (2024)"
 summary: "Shared company-wide context becomes too generic. Project-owned context creates real accuracy. Context must be decentralized, structure must be centralized."
 ---
 

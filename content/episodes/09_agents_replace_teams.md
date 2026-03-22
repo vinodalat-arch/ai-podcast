@@ -9,6 +9,9 @@ tags: ["teams", "agents", "org design", "productivity"]
 publish_date: ""
 status: "draft"
 featured: false
+builds_on: "new-role-of-architects"
+industry_quote: "We won't have programmers anymore. Everyone will be a programmer."
+quote_author: "Jensen Huang, CEO NVIDIA (2024)"
 summary: "Coordination cost increasingly outweighs execution cost. Small human teams with agents outperform larger traditional teams."
 ---
 
