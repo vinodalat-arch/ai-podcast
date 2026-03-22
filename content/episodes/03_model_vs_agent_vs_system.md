@@ -22,7 +22,7 @@ summary: "Your team is debating which AI model to use. They're asking the wrong 
 - An agent produces motion — it does not guarantee correctness
 - The system layer is where AI becomes engineering — and it's the most underinvested layer today
 
-### The Provocative Bit
+### The Core Argument
 
 > "The industry is currently over-focused on models. The real shift is architectural. The future of engineering will not be model-driven. It will be system-driven."
 

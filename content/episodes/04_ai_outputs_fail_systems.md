@@ -22,7 +22,7 @@ summary: "The code compiled. The tests passed. The review looked clean. And it s
 - A build passing is weak evidence. A unit test passing is weak evidence. A demo working once is weak evidence
 - AI is strong at symptom-fixing but weak at understanding causal chains across system boundaries
 
-### The Provocative Bit
+### The Core Argument
 
 > "If AI output looks correct, that is the start of the investigation, not the end."
 

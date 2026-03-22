@@ -22,7 +22,7 @@ summary: "The framework you depend on? AI just made half of it irrelevant. Here'
 - What replaces frameworks: context systems, agent primitives, validation systems, and execution harnesses
 - Frameworks survive where they enforce correctness — they die where they only reduce coding effort
 
-### The Provocative Bit
+### The Core Argument
 
 > "For 20 years, software engineering optimized one thing: making it easier for humans to write code. Frameworks were the answer. Today, AI writes most of that code in seconds. So what exactly are frameworks solving anymore?"
 

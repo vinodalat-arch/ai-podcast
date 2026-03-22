@@ -20,7 +20,7 @@ summary: "Your team writes more code than ever. But can you trust any of it? AI 
 - Without context, AI generates code. With context, AI produces engineering outcomes
 - The future belongs to systems that can be trusted, not systems that can be built fast
 
-### The Provocative Bit
+### The Core Argument
 
 > "AI has made building software easy. It has made trusting software harder."
 
