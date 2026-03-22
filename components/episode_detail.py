@@ -108,6 +108,13 @@ def render_episode_detail(episode):
     # Video
     render_video(video_url)
 
+    st.markdown(
+        '<div style="text-align:right;font-size:12px;color:#999;margin-top:6px;">'
+        'Video created with Google NotebookLM'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
     st.markdown("---")
 
     # Body content
