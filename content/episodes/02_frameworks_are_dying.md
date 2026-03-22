@@ -3,7 +3,7 @@ title: "Why Frameworks Are Dying"
 slug: "frameworks-are-dying"
 episode_number: 2
 arc: "The Shift"
-video_url: ""
+video_url: "https://drive.google.com/file/d/17EmPGfaTX2n0NTLHwRWRMn8Ts9dnOr59/view?usp=drive_link"
 thumbnail: ""
 tags: ["frameworks", "abstraction", "context", "architecture", "AI"]
 publish_date: "2026-03-22"
